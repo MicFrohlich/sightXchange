@@ -3,6 +3,7 @@ from flask import Flask, render_template
 from flask_socketio import SocketIO, send
 from groq import Groq
 from dotenv import load_dotenv
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 load_dotenv()
 
@@ -16,6 +17,9 @@ client = Groq(
     api_key=os.environ.get("GROQ_API_KEY"),
 )
 
+# Initialize the sentiment analyzer
+sentiment_analyzer = SentimentIntensityAnalyzer()
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -24,9 +28,14 @@ def index():
 def handle_message(msg):
     print('Message: ' + msg)
     
+    # Perform sentiment analysis
+    sentiment_score = sentiment_analyzer.polarity_scores(msg)
+    sentiment = max(sentiment_score, key=sentiment_score.get)
+    print(f"Sentiment: {sentiment}, Scores: {sentiment_score}")
+
     try:
         chat_completion = client.chat.completions.create(
-        messages=[
+            messages=[
                 {
                     "role": "user",
                     "content": msg,
@@ -37,7 +46,8 @@ def handle_message(msg):
 
         ai_message = chat_completion.choices[0].message.content
 
-        send(ai_message, broadcast=True)
+        # Send both the AI message and the sentiment analysis result
+        send({"text": ai_message, "sentiment": sentiment}, broadcast=True)
         
     except Exception as e:
         print(f"Error communicating with Groq API: {e}")

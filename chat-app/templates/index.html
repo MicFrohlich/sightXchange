@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Interface</title>
-    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <div id="chat-container">
@@ -13,7 +13,6 @@
         <button id="send-btn">Send</button>
     </div>
 
-    <!-- SocketIO Script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script>
         const socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -28,10 +27,9 @@
             messageInput.value = '';
         });
 
-        // Receive messages from the server
-        socket.on('message', (msg) => {
+        socket.on('message', (data) => {
             const newMessage = document.createElement('p');
-            newMessage.textContent = msg;
+            newMessage.textContent = `AI: ${data.text} (Sentiment: ${data.sentiment})`;
             messagesDiv.appendChild(newMessage);
         });
     </script>
