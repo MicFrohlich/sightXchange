@@ -31,6 +31,13 @@ SENTIMENT_MAP = {
 def index():
     return render_template('index.html')
 
+@socketio.on('connect')
+def handle_connect():
+    # Initial prompt to start the conversation
+    initial_message = "Hi there! I'm here to help you build your perfect website. What kind of design or elements are you looking for?"
+    
+    send({"text": initial_message, "emoji": "🤖", "color": "#a8e6cf", "sentiment": "neutral"}, broadcast=True)
+
 @socketio.on('message')
 def handle_message(msg):
     print('Message: ' + msg)

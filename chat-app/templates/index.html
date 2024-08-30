@@ -49,6 +49,20 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
 
+        socket.on('connect', () => {
+            socket.on('message', (data) => {
+                appendMessage(`AI: ${data.text} ${data.emoji}`);
+                fadeBackgroundColor(data.color);
+                addSentimentElements(data.sentiment);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            });
+        });
+
+        socket.on('load_image', (data) => {
+            const container = document.getElementById('chat-container');
+            addElementWithImage(container, data.url, 'custom-element', 1);
+        });
+
         function addSentimentElements(sentiment) {
             const container = document.getElementById('chat-container');
 
