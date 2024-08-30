@@ -21,17 +21,101 @@
         const sendBtn = document.getElementById('send-btn');
         const messagesDiv = document.getElementById('messages');
 
+        function appendMessage(message) {
+            const messagesDiv = document.getElementById('messages');
+            const newMessage = document.createElement('p');
+            newMessage.textContent = message;
+            messagesDiv.appendChild(newMessage);
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
         sendBtn.addEventListener('click', () => {
             const message = messageInput.value;
+
+            appendMessage(`You: ${message}`);
+
             socket.send(message);
             messageInput.value = '';
         });
 
         socket.on('message', (data) => {
-            const newMessage = document.createElement('p');
-            newMessage.textContent = `AI: ${data.text} (Sentiment: ${data.sentiment})`;
-            messagesDiv.appendChild(newMessage);
+            appendMessage(`AI: ${data.text} ${data.emoji}`);
+
+            fadeBackgroundColor(data.color);
+
+            addSentimentElements(data.sentiment);
+
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
+
+        function addSentimentElements(sentiment) {
+            const container = document.getElementById('chat-container');
+
+            clearSentimentElements();
+
+            switch (sentiment) {
+                case 'very_positive':
+                    addElement(container, 'fireworks', 5);
+                    addElement(container, 'confetti', 10);
+                    addElement(container, 'balloons', 3);
+                    break;
+                case 'positive':
+                    addElement(container, 'sparkles', 10);
+                    addElement(container, 'growing-plants', 1);
+                    addElement(container, 'sun', 1);
+                    break;
+                case 'neutral':
+                    addElement(container, 'clouds', 3);
+                    addElement(container, 'swaying-trees', 2);
+                    addElement(container, 'calm-waves', 1);
+                    break;
+                case 'negative':
+                    addElement(container, 'sparks', 5);
+                    addElement(container, 'dark-clouds', 3);
+                    addElement(container, 'wilted-leaves', 5);
+                    break;
+                case 'very_negative':
+                    addElement(container, 'fire', 3);
+                    addElement(container, 'lightning', 2);
+                    document.body.classList.add('shake');
+                    setTimeout(() => document.body.classList.remove('shake'), 1000);
+                    break;
+                case 'mixed':
+                    addElement(container, 'sun-clouds', 1);
+                    addElement(container, 'rainbow', 1);
+                    break;
+            }
+        }
+
+        function clearSentimentElements() {
+            const container = document.getElementById('chat-container');
+            const sentimentElements = container.querySelectorAll('.fireworks, .confetti, .balloons, .sparkles, .growing-plants, .sun, .clouds, .swaying-trees, .calm-waves, .sparks, .dark-clouds, .wilted-leaves, .fire, .lightning, .sun-clouds, .rainbow');
+            sentimentElements.forEach(element => element.remove());
+        }
+
+        function addElement(container, className, count) {
+            for (let i = 0; i < count; i++) {
+                const element = document.createElement('div');
+                element.className = className + ' element';
+                positionElementRandomly(element);
+                container.appendChild(element);
+            }
+        }
+
+        function positionElementRandomly(element) {
+            const container = document.getElementById('chat-container');
+            const containerRect = container.getBoundingClientRect();
+            const x = Math.random() * (containerRect.width - 50);
+            const y = Math.random() * (containerRect.height - 50);
+            element.style.left = `${x}px`;
+            element.style.top = `${y}px`;
+        }
+
+        function fadeBackgroundColor(newColor) {
+            document.body.style.transition = "background-color 1s ease";
+            document.body.style.backgroundColor = newColor;
+        }
     </script>
 </body>
 </html>

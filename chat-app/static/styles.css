@@ -1,6 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    transition: background-color 1s ease;
 }
 
 #chat-container {
@@ -39,4 +40,239 @@ body {
 
 #send-btn:hover {
     background-color: #218838;
+}
+
+/* General Element Styles */
+.element {
+    position: absolute;
+}
+
+/* Very Positive: Fireworks, Confetti, Balloons */
+.fireworks {
+    width: 50px;
+    height: 50px;
+    background: url('firework.png') no-repeat center center;
+    background-size: contain;
+    animation: explode 2s ease-out;
+}
+
+@keyframes explode {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.5); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
+}
+
+.confetti {
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, yellow, red, blue);
+    animation: fall 2s infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(200px); }
+}
+
+.balloons {
+    width: 30px;
+    height: 50px;
+    background: url('balloon.png') no-repeat center center;
+    background-size: contain;
+    animation: floatUp 4s ease-out infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(100px); }
+    100% { transform: translateY(-200px); }
+}
+
+/* Positive: Sparkles, Growing Plants, Sun Rising */
+.sparkles {
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, white, rgba(255,255,255,0));
+    animation: sparkle-animation 2s infinite;
+}
+
+@keyframes sparkle-animation {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.5); }
+}
+
+.growing-plants {
+    width: 100px;
+    height: 100px;
+    background: url('plant.png') no-repeat center center;
+    background-size: contain;
+    animation: grow 5s forwards;
+}
+
+@keyframes grow {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+.sun {
+    width: 50px;
+    height: 50px;
+    background: radial-gradient(circle, yellow, orange);
+    bottom: 0;
+    animation: sun-rise 10s forwards;
+}
+
+@keyframes sun-rise {
+    0% { bottom: 0; }
+    100% { bottom: 200px; }
+}
+
+/* Neutral: Clouds, Swaying Trees, Calm Waves */
+.clouds {
+    width: 100px;
+    height: 50px;
+    background: url('cloud.png') no-repeat center center;
+    background-size: contain;
+    animation: drift 20s linear infinite;
+}
+
+@keyframes drift {
+    0% { left: -100px; }
+    100% { left: 100%; }
+}
+
+.swaying-trees {
+    width: 50px;
+    height: 100px;
+    background: url('tree.png') no-repeat center center;
+    background-size: contain;
+    animation: sway 5s infinite;
+}
+
+@keyframes sway {
+    0% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+    100% { transform: rotate(-5deg); }
+}
+
+.calm-waves {
+    width: 100%;
+    height: 50px;
+    background: url('wave.png') repeat-x;
+    background-size: contain;
+    animation: wave 4s linear infinite;
+}
+
+@keyframes wave {
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 0; }
+}
+
+/* Negative: Sparks, Dark Clouds, Wilted Leaves */
+.sparks {
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle, red, orange);
+    animation: spark-animation 1s infinite;
+}
+
+@keyframes spark-animation {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.dark-clouds {
+    width: 100px;
+    height: 50px;
+    background: url('dark-cloud.png') no-repeat center center;
+    background-size: contain;
+    animation: dark-drift 15s linear infinite;
+}
+
+@keyframes dark-drift {
+    0% { left: -100px; }
+    100% { left: 100%; }
+}
+
+.wilted-leaves {
+    width: 10px;
+    height: 20px;
+    background: url('wilted-leaf.png') no-repeat center center;
+    background-size: contain;
+    animation: wilt 3s forwards;
+}
+
+@keyframes wilt {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(200px); opacity: 0; }
+}
+
+/* Very Negative: Fire, Lightning, Shaking Screen */
+.fire {
+    width: 50px;
+    height: 100px;
+    background: url('fire.png') no-repeat center center;
+    background-size: contain;
+    animation: burn 2s infinite;
+}
+
+@keyframes burn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.lightning {
+    width: 2px;
+    height: 100px;
+    background: white;
+    animation: flash 1s infinite;
+}
+
+@keyframes flash {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+/* Mixed: Sun and Clouds, Rainbow */
+.sun-clouds {
+    width: 100px;
+    height: 100px;
+    background: url('sun-cloud.png') no-repeat center center;
+    background-size: contain;
+    animation: sun-cloud-animation 10s linear infinite;
+}
+
+@keyframes sun-cloud-animation {
+    0% { transform: translateX(-100px); }
+    100% { transform: translateX(100%); }
+}
+
+.rainbow {
+    width: 100px;
+    height: 50px;
+    background: url('rainbow.png') no-repeat center center;
+    background-size: contain;
+    animation: appear 5s forwards;
+}
+
+@keyframes appear {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }

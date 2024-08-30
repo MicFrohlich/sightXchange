@@ -20,6 +20,13 @@ client = Groq(
 # Initialize the sentiment analyzer
 sentiment_analyzer = SentimentIntensityAnalyzer()
 
+# Mapping sentiment to emoji and color
+SENTIMENT_MAP = {
+    'positive': {'emoji': '😊', 'color': '#a8e6cf'},  # Light green
+    'neutral': {'emoji': '😐', 'color': '#ffd3b6'},   # Light orange
+    'negative': {'emoji': '😞', 'color': '#ff8b94'},  # Light red
+}
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -30,9 +37,16 @@ def handle_message(msg):
     
     # Perform sentiment analysis
     sentiment_score = sentiment_analyzer.polarity_scores(msg)
-    sentiment = max(sentiment_score, key=sentiment_score.get)
-    print(f"Sentiment: {sentiment}, Scores: {sentiment_score}")
-
+    if sentiment_score['compound'] >= 0.05:
+        sentiment = 'positive'
+    elif sentiment_score['compound'] <= -0.05:
+        sentiment = 'negative'
+    else:
+        sentiment = 'neutral'
+    
+    emoji = SENTIMENT_MAP[sentiment]['emoji']
+    color = SENTIMENT_MAP[sentiment]['color']
+    
     try:
         chat_completion = client.chat.completions.create(
             messages=[
@@ -46,12 +60,12 @@ def handle_message(msg):
 
         ai_message = chat_completion.choices[0].message.content
 
-        # Send both the AI message and the sentiment analysis result
-        send({"text": ai_message, "sentiment": sentiment}, broadcast=True)
+        # Send the AI message, emoji, and color back to the client
+        send({"text": ai_message, "emoji": emoji, "color": color, "sentiment": sentiment}, broadcast=True)
         
     except Exception as e:
         print(f"Error communicating with Groq API: {e}")
-        send("Sorry, there was an error processing your request.", broadcast=True)
+        send({"text": "Sorry, there was an error processing your request.", "emoji": "😕", "color": "#cccccc"}, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
